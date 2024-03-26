@@ -1,0 +1,6 @@
+@Flavory.Services.CouponAPI_HostAddress = http://localhost:5235
+
+GET {{Flavory.Services.CouponAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
