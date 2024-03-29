@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Flavory.Services.CouponAPI.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/cou2pon")]
 	[ApiController]
 	public class CouponAPIController : ControllerBase
 	{
@@ -114,7 +114,8 @@ namespace Flavory.Services.CouponAPI.Controllers
 		}
 
 		[HttpDelete]
-		public ResponseDto Delete(int id)
+        [Route("{id:int}")]
+        public ResponseDto Delete(int id)
 		{
 			try
 			{
