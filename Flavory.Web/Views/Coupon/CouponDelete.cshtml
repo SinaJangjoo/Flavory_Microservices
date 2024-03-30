@@ -3,7 +3,7 @@
 <form asp-action="CouponDelete">
     <br />
     <div class="container border p-3">
-        <h1 class="text-white text-center">Delete Coupon</h1>
+        <h1 class="text-black text-center">Delete Coupon</h1>
         <input asp-for="CouponId" hidden />
         <hr />
         <div class="row">
@@ -27,10 +27,10 @@
             </div>
 
             <div class="col-5 offset-2">
-                <a asp-action="CouponIndex" class="btn-info btn form-control text-black">Back to List</a>
+                <a asp-action="CouponIndex" class="btn-warning btn form-control">Back to List</a>
             </div>
             <div class="col-5">
-                <input type="submit" value="Delete" class="btn btn-danger form-control text-black" />
+                <input type="submit" value="Delete" class="btn btn-danger form-control" />
 
             </div>
 

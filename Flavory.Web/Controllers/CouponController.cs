@@ -42,6 +42,7 @@ namespace Flavory.Web.Controllers
                 ResponseDto? response = await _couponService.CreateCouponsAsync(model);
                 if (response != null && response.IsSuccess)
                 {
+                    TempData["success"] = "Coupon created successfully!";
                     return RedirectToAction(nameof(CouponIndex));
                 }
                 else
@@ -70,6 +71,7 @@ namespace Flavory.Web.Controllers
             ResponseDto? response = await _couponService.DeleteCouponsAsync(couponDto.CouponId);
             if (response != null && response.IsSuccess)
             {
+                TempData["success"] = "Coupon deleted successfully!";
                 return RedirectToAction(nameof(CouponIndex));
             }
             else

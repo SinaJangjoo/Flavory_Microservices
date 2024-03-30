@@ -1,40 +1,40 @@
 ﻿@model CouponDto
 
-<form asp-action="CreateCoupon">
+<form asp-action="CreateCoupon" >
     <br />
     <div class="container border p-3">
-        <h1 class="text-white text-center">Create Coupon</h1>
+        <h1 class="text-black text-center">Create Coupon</h1>
 
         <hr />
         <div class="row">
             <div class="col-2">
-                <label class="control-label pt-1" style="font-size:20px;">Coupon Code</label>
+                <label class="control-label pt-3" style="font-size:17px;">Coupon Code</label>
             </div>
             <div class="col-10 pb-3">
                 <input asp-for="CouponCode" class="form-control" />
-                <span asp-validation-for="CouponCode" class="text-warning"></span>
+                <span asp-validation-for="CouponCode" class="text-danger"></span>
             </div>
             <div class="col-2">
-                <label class="control-label pt-1" style="font-size:20px;">Discount Amount</label>
+                <label class="control-label pt-3" style="font-size:17px;">Discount Amount</label>
             </div>
             <div class="col-10 pb-3">
                 <input asp-for="DiscountAmount" class="form-control" />
-                <span asp-validation-for="CouponCode" class="text-warning"></span>
+                <span asp-validation-for="CouponCode" class="text-danger"></span>
             </div>
             <div class="col-2">
-                <label class="control-label pt-1" style="font-size:19px;">Minimum Amount</label>
+                <label class="control-label pt-3" style="font-size:17px;">Minimum Amount</label>
             </div>
             <div class="col-10 pb-3">
                 <input asp-for="MinAmount" class="form-control" />
-                <span asp-validation-for="CouponCode" class="text-warning"></span>
+                <span asp-validation-for="CouponCode" class="text-danger"></span>
             </div>
 
             <div class="col-5 offset-2">
 
-                <a asp-action="CouponIndex" class="btn-danger btn form-control text-black">Back to List</a>
+                <a asp-action="CouponIndex" class="btn-danger btn form-control">Back to List</a>
             </div>
             <div class="col-5">
-                <input type="submit" value="Create" class="btn btn-success form-control text-black" />
+                <input type="submit" value="Create" class="btn btn-success form-control" />
 
             </div>
 

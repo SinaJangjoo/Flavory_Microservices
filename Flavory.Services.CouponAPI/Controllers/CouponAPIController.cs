@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Flavory.Services.CouponAPI.Controllers
 {
-	[Route("api/cou2pon")]
+	[Route("api/coupon")]
 	[ApiController]
 	public class CouponAPIController : ControllerBase
 	{
