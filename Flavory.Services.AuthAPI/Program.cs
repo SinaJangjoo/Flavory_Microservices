@@ -1,5 +1,6 @@
 using Flavory.Services.AuthAPI.Data;
 using Flavory.Services.AuthAPI.Models;
+using Flavory.Services.AuthAPI.Models.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>()
 	.AddDefaultTokenProviders();  //This act as a bridge between EF and .Net identity
 builder.Services.AddControllers();
