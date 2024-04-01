@@ -7,7 +7,7 @@ namespace Flavory.Services.AuthAPI.Services.IServices
 
 	public interface IAuthService
 	{
-		//In register the return is those columns in UserDto and recieve those columns in RegistrationRequestDto
+		//In register the return is string which is and Message and recieve those columns in RegistrationRequestDto
 		Task<string> Register(RegistrationRequestDto registrationRequestDto);
 
 

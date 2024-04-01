@@ -3,6 +3,7 @@ using Flavory.Services.AuthAPI.Models;
 using Flavory.Services.AuthAPI.Models.Dto;
 using Flavory.Services.AuthAPI.Services.IServices;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Identity.Client;
 
 namespace Flavory.Services.AuthAPI.Services
 {
@@ -11,12 +12,14 @@ namespace Flavory.Services.AuthAPI.Services
 		private readonly AppDbContext _db;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
+		private readonly IJwtTokenGenerator _jwtTokenGenerator;
 		public AuthService(AppDbContext db,
-			UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+			UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IJwtTokenGenerator jwtTokenGenerator)
 		{
 			_db = db;
 			_userManager = userManager;
 			_roleManager = roleManager;
+			_jwtTokenGenerator = jwtTokenGenerator;
 		}
 
 
@@ -28,8 +31,8 @@ namespace Flavory.Services.AuthAPI.Services
 			{
 				return new LoginResponseDto() { User = null, Token = "" };
 			}
-
 			//If the user was found => Generate JWT Token
+			var token = _jwtTokenGenerator.GenerateToken(user);
 
 			UserDto userDto = new()
 			{
@@ -81,6 +84,7 @@ namespace Flavory.Services.AuthAPI.Services
 			}
 			catch (Exception ex)
 			{
+
 			}
 			return "Error Encountered";
 		}
