@@ -1,6 +1,8 @@
 using Flavory.Services.AuthAPI.Data;
 using Flavory.Services.AuthAPI.Models;
 using Flavory.Services.AuthAPI.Models.Dto;
+using Flavory.Services.AuthAPI.Services;
+using Flavory.Services.AuthAPI.Services.IServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +17,9 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSett
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>()
 	.AddDefaultTokenProviders();  //This act as a bridge between EF and .Net identity
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
