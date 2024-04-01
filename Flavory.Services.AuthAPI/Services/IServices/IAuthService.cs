@@ -13,5 +13,7 @@ namespace Flavory.Services.AuthAPI.Services.IServices
 
 		//In register the return is those columns in LoginResponseDto and recieve those columns in LoginRequestDto
 		Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
+
+		Task<bool> AssignRole(string email, string roleName);
 	}
 }
