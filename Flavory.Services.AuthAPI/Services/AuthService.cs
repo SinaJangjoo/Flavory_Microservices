@@ -20,10 +20,33 @@ namespace Flavory.Services.AuthAPI.Services
 		}
 
 
-		public Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
+		public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
 		{
-			throw new NotImplementedException();
+			var user = _db.ApplicationUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.UserName.ToLower());
+			bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+			if (user == null || isValid == false)
+			{
+				return new LoginResponseDto() { User = null, Token = "" };
+			}
+
+			//If the user was found => Generate JWT Token
+
+			UserDto userDto = new()
+			{
+				Email = user.Email,
+				ID = user.Id,
+				Name = user.Name,
+				PhoneNumber = user.PhoneNumber
+			};
+
+			LoginResponseDto loginResponseDto = new()
+			{
+				User = userDto,
+				Token = ""
+			};
+			return loginResponseDto;
 		}
+
 
 		public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
 		{
