@@ -68,7 +68,7 @@ namespace Flavory.Web.Controllers
         {
             ResponseDto result = await _authService.RegisterAsync(obj);
             ResponseDto AssignRole;
-            if (result!=null && result.IsSuccess)
+            if (result != null && result.IsSuccess)
             {
                 if (string.IsNullOrEmpty(obj.Role))
                 {
@@ -76,9 +76,9 @@ namespace Flavory.Web.Controllers
                 }
                 //It will create the role if that does not exists
                 //If it already exist then it will assign that role to the User
-                AssignRole = await _authService.AssignRoleAsync(obj); 
+                AssignRole = await _authService.AssignRoleAsync(obj);
 
-                if (AssignRole!=null && AssignRole.IsSuccess)
+                if (AssignRole != null && AssignRole.IsSuccess)
                 {
                     TempData["success"] = "Registration Successful";
                     return RedirectToAction(nameof(Login));
@@ -93,9 +93,17 @@ namespace Flavory.Web.Controllers
             return View(obj);
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout(LoginRequestDto obj)
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                string user = User.Identity.Name;
+                await HttpContext.SignOutAsync();
+                _tokenProvider.ClearToken();
+                TempData["warning"] = $"{user} has been Logged out!";
+            return RedirectToAction("Index", "Home");
+            }
+            return View(obj);
         }
 
         private async Task SignInUser(LoginResponseDto model)
