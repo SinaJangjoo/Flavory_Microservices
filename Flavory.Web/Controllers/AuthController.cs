@@ -33,7 +33,7 @@ namespace Flavory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDto obj)
         {
-            ResponseDto responseDto = await _authService.LoginAsync(obj);
+            ResponseDto? responseDto = await _authService.LoginAsync(obj);
             if (responseDto != null && responseDto.IsSuccess)
             {
                 LoginResponseDto loginResponseDto =
@@ -46,7 +46,7 @@ namespace Flavory.Web.Controllers
             }
             else
             {
-                TempData["error"] = responseDto.Message;
+                TempData["error"] = $"Login Failed!\n{responseDto?.Message}";
                 return View(obj);
             }
         }
@@ -66,8 +66,8 @@ namespace Flavory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegistrationRequestDto obj)
         {
-            ResponseDto result = await _authService.RegisterAsync(obj);
-            ResponseDto AssignRole;
+            ResponseDto? result = await _authService.RegisterAsync(obj);
+            ResponseDto? AssignRole;
             if (result != null && result.IsSuccess)
             {
                 if (string.IsNullOrEmpty(obj.Role))
@@ -84,6 +84,10 @@ namespace Flavory.Web.Controllers
                     return RedirectToAction(nameof(Login));
                 }
             }
+            else
+            {
+                TempData["error"] = $"Registration Failed!\n{result?.Message}";
+            }
             var roleList = new List<SelectListItem>()
             {
                 new SelectListItem{Text=SD.RoleAdmin,Value=SD.RoleAdmin},
@@ -97,7 +101,7 @@ namespace Flavory.Web.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                string user = User.Identity.Name;
+                string? user = User.Identity.Name;
                 await HttpContext.SignOutAsync();
                 _tokenProvider.ClearToken();
                 TempData["warning"] = $"{user} has been Logged out!";

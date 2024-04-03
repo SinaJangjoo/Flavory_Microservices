@@ -2,12 +2,14 @@
 using Flavory.Services.CouponAPI.Data;
 using Flavory.Services.CouponAPI.Models;
 using Flavory.Services.CouponAPI.Models.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Flavory.Services.CouponAPI.Controllers
 {
 	[Route("api/coupon")]
 	[ApiController]
+	[Authorize]
 	public class CouponAPIController : ControllerBase
 	{
 		private readonly AppDbContext _db;
