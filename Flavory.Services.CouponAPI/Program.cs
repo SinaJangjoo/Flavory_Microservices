@@ -1,5 +1,6 @@
 using AutoMapper;
 using Flavory.Services.CouponAPI.Data;
+using Flavory.Services.CouponAPI.Extensions;
 using Mango.Services.CouponAPI;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -52,33 +53,8 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-//---------------------- Add Authorized (appsettings.json) -----------------------
-var settingsSection = builder.Configuration.GetSection("ApiSettings");
-
-var secret = settingsSection.GetValue<string>("Secret");
-var issuer = settingsSection.GetValue<string>("Issuer");
-var audience = settingsSection.GetValue<string>("Audience");
-var key = Encoding.ASCII.GetBytes(secret);
-
-
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
-        ValidIssuer = issuer,
-        ValidAudience = audience,
-        ValidateAudience = true
-    };
-});
-
-
+// in this class in Extensions folder we define and implement authentication to avoid make this page codes dirty!
+builder.AddAppAuthetication(); 
 
 var app = builder.Build();
 
