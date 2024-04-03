@@ -78,7 +78,8 @@ namespace Flavory.Services.CouponAPI.Controllers
 		}
 
 		[HttpPost]
-		public ResponseDto Post([FromBody] CouponDto couponDto)
+        [Authorize(Roles ="ADMIN")]
+        public ResponseDto Post([FromBody] CouponDto couponDto)
 		{
 			try
 			{
@@ -97,7 +98,8 @@ namespace Flavory.Services.CouponAPI.Controllers
 		}
 
 		[HttpPut]
-		public ResponseDto Put([FromBody] CouponDto couponDto)
+        [Authorize(Roles = "ADMIN")]
+        public ResponseDto Put([FromBody] CouponDto couponDto)
 		{
 			try
 			{
@@ -117,6 +119,7 @@ namespace Flavory.Services.CouponAPI.Controllers
 
 		[HttpDelete]
         [Route("{id:int}")]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto Delete(int id)
 		{
 			try
