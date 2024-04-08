@@ -4,7 +4,7 @@
 	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
 		<div class="row">
 			<div class="col-12 text-center">
-				<h1 class="text-white">Products List</h1>
+				<h1 class="text-black">Products List</h1>
 			</div>
 		</div>
 	</div>
@@ -13,11 +13,11 @@
 			<div class="col-6">
 			</div>
 			<div class="col-6 text-end">
-				<a class="btn btn-outline-success"><i class="bi bi-plus-square"></i> Create New Product</a>
+				<a asp-action="ProductCreate" asp-controller="Product" class="btn btn-outline-success"><i class="bi bi-plus-square"></i> Create New Product</a>
 
 			</div>
 		</div>
-		<table class="table">
+		<table class="table table-primary">
 			<thead>
 				<tr>
 					<th>
@@ -46,10 +46,10 @@
 							@((item.Price).ToString("c"))
 						</td>
 						<td>
-							<a class="btn btn-warning">
+							<a asp-action="ProductEdit" asp-route-productId="@item.ProductId" class="btn btn-warning">
 								<i class="bi bi-pencil-square"></i>
 							</a>
-							<a class="btn btn-danger">
+							<a asp-action="ProductDelete" asp-route-productId="@item.ProductId" class="btn btn-danger">
 								<i class="bi bi-trash"></i>
 							</a>
 						</td>

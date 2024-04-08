@@ -1,0 +1,52 @@
+﻿@model ProductDto
+
+<form asp-action="ProductDelete">
+    <br />
+    <div class="container border p-3">
+        <h1 class="text-black text-center">Delete Product</h1>
+        <input asp-for="ProductId" hidden />
+        <hr />
+        <div class="row">
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" disabled asp-for="Name" />
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Category Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" disabled asp-for="CategoryName" />
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Description</label>
+            </div>
+            <div class="col-10 pb-3">
+                <textarea class="form-control" disabled rows="5" asp-for="Description"></textarea>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">ImageUrl</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" disabled asp-for="ImageUrl" />
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Price</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input class="form-control" disabled asp-for="Price" />
+            </div>
+            <div class="col-5 offset-2">
+                <a class="btn-warning btn form-control" asp-action="ProductIndex" asp-controller="Product">Back to List</a>
+            </div>
+            <div class="col-5">
+                <input type="submit" value="Delete" class="btn btn-danger form-control" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}  
