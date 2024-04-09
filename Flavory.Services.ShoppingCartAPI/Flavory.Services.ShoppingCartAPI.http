@@ -1,0 +1,6 @@
+@Flavory.Services.ShoppingCartAPI_HostAddress = http://localhost:5055
+
+GET {{Flavory.Services.ShoppingCartAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
