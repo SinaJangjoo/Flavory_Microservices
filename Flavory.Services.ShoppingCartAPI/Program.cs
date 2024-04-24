@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Flavory.Services.ShoppingCartAPI.Service.IService;
+using Flavory.Services.ShoppingCartAPI.Service;
+using Flavory.Services.ShoppingCartAPI.Utility;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +20,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
+builder.Services.AddScoped<ICouponService, CouponService>();
 
 //--------------------Auto Mapper-------------------
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
@@ -24,6 +31,14 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //--------------------------------------------------
 
+//------------------------------HTTP Client for ProductAPI inside this project ( CartAPI )---------------------------------------
+builder.Services.AddHttpClient("Product", u => u.BaseAddress =
+new Uri(builder.Configuration["ServiceUrls:ProductAPI"])).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+
+builder.Services.AddHttpClient("Coupon", u => u.BaseAddress =
+new Uri(builder.Configuration["ServiceUrls:CouponAPI"])).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+
+//---------------------------------------------------------------------
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
