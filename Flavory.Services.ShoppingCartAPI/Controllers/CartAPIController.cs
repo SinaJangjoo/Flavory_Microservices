@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Flavory.MessageBus;
 using Flavory.Services.ShoppingCartAPI.Data;
 using Flavory.Services.ShoppingCartAPI.Models;
 using Flavory.Services.ShoppingCartAPI.Models.Dto;
@@ -6,6 +7,7 @@ using Flavory.Services.ShoppingCartAPI.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Flavory.Services.ShoppingCartAPI.Controllers
 {
@@ -18,15 +20,19 @@ namespace Flavory.Services.ShoppingCartAPI.Controllers
         private IMapper _mapper;
         private IProductService _productService;
         private ICouponService _couponService;
+        private readonly IMessageBus _messageBus;
+        private IConfiguration _configuration;
 
         public CartAPIController(AppDbContext db, IMapper mapper, IProductService productService,
-            ICouponService couponService)
+            ICouponService couponService, IMessageBus messageBus, IConfiguration configuration)
         {
             _db = db;
             _mapper = mapper;
             _productService = productService;
             _response = new();
             _couponService = couponService;
+            _messageBus = messageBus;
+            _configuration = configuration;
         }
 
         [HttpGet("GetCart/{userId}")]
@@ -86,6 +92,24 @@ namespace Flavory.Services.ShoppingCartAPI.Controllers
             {
                 _response.IsSuccess = false;
                 _response.Message = ex.Message.ToString();
+            }
+            return _response;
+        }
+
+
+        /// ////////////////////////////////////   Message Bus Action    ////////////////////////////////
+        [HttpPost("EmailCartRequest")]
+        public async Task<object> EmailCartRequest([FromBody] CartDto cartDto)
+        {
+            try
+            {
+                await _messageBus.PublishMessage(cartDto, _configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"));
+                _response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.ToString();
             }
             return _response;
         }

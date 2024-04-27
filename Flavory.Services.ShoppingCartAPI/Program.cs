@@ -10,6 +10,7 @@ using System.Text;
 using Flavory.Services.ShoppingCartAPI.Service.IService;
 using Flavory.Services.ShoppingCartAPI.Service;
 using Flavory.Services.ShoppingCartAPI.Utility;
+using Flavory.MessageBus;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IMessageBus, MessageBus>();
 
 //--------------------Auto Mapper-------------------
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();

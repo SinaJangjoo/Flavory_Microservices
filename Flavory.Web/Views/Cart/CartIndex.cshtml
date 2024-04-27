@@ -3,7 +3,7 @@
 
 @if (Model.CartHeader != null && Model.CartDetails?.Count() > 0)
 {
-    <form method="post">
+    <form method="post" asp-action="EmailCart">
         @* When the form posted the User Id will also being populated (Used in ApplyCoupon action) *@
         <input asp-for="CartHeader.UserId" hidden />
         <input asp-for="CartHeader.CartHeaderId" hidden />
@@ -90,7 +90,7 @@
                         <button type="submit" class="btn btn-outline-primary form-control">Email Cart</button>
                     </div>
                     <div class="col-6 col-md-3 offset-md-6">
-                        <button disabled class="btn btn-success form-control">Checkout (Comming Soon!)</button>
+                        <a asp-action="Checkout" class="btn btn-success form-control">Place Order</a>
                     </div>
                 </div>
             </div>

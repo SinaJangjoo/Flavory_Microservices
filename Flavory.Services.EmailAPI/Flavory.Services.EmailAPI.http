@@ -1,0 +1,6 @@
+@Flavory.Services.EmailAPI_HostAddress = http://localhost:5258
+
+GET {{Flavory.Services.EmailAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

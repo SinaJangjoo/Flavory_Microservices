@@ -14,5 +14,7 @@ namespace Flavory.Services.ShoppingCartAPI.Models
         public double Discount { get; set; }
         [NotMapped]
         public double CartTotal { get; set; }
+
+       
     }
 }
