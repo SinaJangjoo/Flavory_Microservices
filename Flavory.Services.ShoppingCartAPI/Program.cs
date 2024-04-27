@@ -1,47 +1,38 @@
 using AutoMapper;
-using Flavory.Services.ShoppingCartAPI.Extensions;
+using Flavory.MessageBus;
+using Flavory.Services.ShoppingCartAPI;
 using Flavory.Services.ShoppingCartAPI.Data;
+using Flavory.Services.ShoppingCartAPI.Extensions;
+using Flavory.Services.ShoppingCartAPI.Service;
+using Flavory.Services.ShoppingCartAPI.Service.IService;
+using Flavory.Services.ShoppingCartAPI.Utility;
 using Mango.Services.ShoppingCartAPI;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using Flavory.Services.ShoppingCartAPI.Service.IService;
-using Flavory.Services.ShoppingCartAPI.Service;
-using Flavory.Services.ShoppingCartAPI.Utility;
-using Flavory.MessageBus;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
 
+builder.Services.AddDbContext<AppDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IMessageBus, MessageBus>();
-
-//--------------------Auto Mapper-------------------
-IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
-builder.Services.AddSingleton(mapper);
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-//--------------------------------------------------
-
-//------------------------------HTTP Client for ProductAPI inside this project ( CartAPI )---------------------------------------
 builder.Services.AddHttpClient("Product", u => u.BaseAddress =
 new Uri(builder.Configuration["ServiceUrls:ProductAPI"])).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
-
 builder.Services.AddHttpClient("Coupon", u => u.BaseAddress =
 new Uri(builder.Configuration["ServiceUrls:CouponAPI"])).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
-
-//---------------------------------------------------------------------
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -69,9 +60,9 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
-
-// in this class in Extensions folder we define and implement authentication to avoid make this page codes dirty!
 builder.AddAppAuthetication();
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -87,24 +78,19 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-ApplyMigration();  // (1)
-
+ApplyMigration();
 app.Run();
 
 
-//  (1)  It checks if there is any pending migration, apply them
-//With this method we never need to "update-database" in the command!
-//whenever we start the application, it will automatically update our database and apply changes!
 void ApplyMigration()
 {
-    using (var scope = app.Services.CreateScope())  //It will give us all the services
+    using (var scope = app.Services.CreateScope())
     {
-        var _db = scope.ServiceProvider.GetRequiredService<AppDbContext>(); //Now we bring this service out from all services
+        var _db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         if (_db.Database.GetPendingMigrations().Count() > 0)
         {
-            _db.Database.Migrate(); //And finally apply changes if migration still pending
+            _db.Database.Migrate();
         }
     }
 }
