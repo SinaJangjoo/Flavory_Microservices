@@ -65,6 +65,10 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+//The stripe API Key defined in appsettings.json  and it will use in action name of GetStripeSession in controller!
+Stripe.StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

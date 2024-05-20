@@ -21,8 +21,6 @@ namespace Flavory.Web.Service
 		{
 			try
 			{
-
-
 				HttpClient client = _httpClientFactory.CreateClient("FlavoryAPI");
 				HttpRequestMessage message = new();
 				message.Headers.Add("Accept", "application/json");

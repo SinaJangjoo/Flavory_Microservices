@@ -21,15 +21,15 @@
             <div class="col-7">
                 <div class="row pt-2">
                     <div class="col-12 py-2">
-                        <input placeholder="@User.Identity.Name" class="form-control" />
+                        <input asp-for="CartHeader.Name" placeholder="Full Name..." class="form-control" />
                         <span asp-validation-for="CartHeader.Name" class="text-danger"></span>
                     </div>
                     <div class="col-12 py-2">
-                        <input placeholder="Email..." class="form-control" />
+                        <input asp-for="CartHeader.Email" placeholder="Email..." class="form-control" />
                         <span asp-validation-for="CartHeader.Email" class="text-danger"></span>
                     </div>
                     <div class="col-12 py-2">
-                        <input class="form-control" placeholder="Phone Number..." />
+                        <input asp-for="CartHeader.Phone" class="form-control" placeholder="Phone Number..." />
                         <span asp-validation-for="CartHeader.Phone" class="text-danger"></span>
                     </div>
                     <div class="col-12 pt-2">

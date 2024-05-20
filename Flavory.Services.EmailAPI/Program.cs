@@ -1,14 +1,27 @@
-using Microsoft.EntityFrameworkCore;
 using Flavory.Services.EmailAPI.Data;
+using Mango.Services.EmailAPI.Extension;
+using Mango.Services.EmailAPI.Messaging;
+using Mango.Services.EmailAPI.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(option =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+
+var optionBuilder = new DbContextOptionsBuilder<AppDbContext>();
+optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddSingleton(new EmailService(optionBuilder.Options));
+
+//builder.Services.AddHostedService<RabbitMQAuthConsumer>();
+//builder.Services.AddHostedService<RabbitMQOrderConsumer>();
+//builder.Services.AddHostedService<RabbitMQCartConsumer>();
+builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,24 +41,20 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-ApplyMigration();  // (1)
-
+ApplyMigration();
+app.UseAzureServiceBusConsumer();
 app.Run();
 
 
-//  (1)  It checks if there is any pending migration, apply them
-//With this method we never need to "update-database" in the command!
-//whenever we start the application, it will automatically update our database and apply changes!
 void ApplyMigration()
 {
-    using (var scope = app.Services.CreateScope())  //It will give us all the services
+    using (var scope = app.Services.CreateScope())
     {
-        var _db = scope.ServiceProvider.GetRequiredService<AppDbContext>(); //Now we bring this service out from all services
+        var _db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         if (_db.Database.GetPendingMigrations().Count() > 0)
         {
-            _db.Database.Migrate(); //And finally apply changes if migration still pending
+            _db.Database.Migrate();
         }
     }
 }
