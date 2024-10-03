@@ -1,6 +1,6 @@
 using Flavory.Services.RewardAPI.Data;
 using Flavory.Services.RewardAPI.Messaging;
-using Mango.Services.EmailAPI.Extension;
+using Mango.Services.RewardAPI.Extension;
 using Mango.Services.RewardAPI.Messaging;
 using Mango.Services.RewardAPI.Services;
 using Microsoft.EntityFrameworkCore;

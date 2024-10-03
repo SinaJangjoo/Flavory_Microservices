@@ -46,11 +46,11 @@ namespace Flavory.Services.ProductAPI.Controllers
             try
             {
                 Product obj = _db.Products.First(u => u.ProductId == id);
-                _response.Result=_mapper.Map<ProductDto>(obj);
+                _response.Result = _mapper.Map<ProductDto>(obj);
             }
             catch (Exception ex)
             {
-                _response.IsSuccess=false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return _response;
@@ -62,54 +62,115 @@ namespace Flavory.Services.ProductAPI.Controllers
         {
             try
             {
-            var obj = _db.Products.First(u => u.Name.ToLower() == name.ToLower());
-            if (obj==null)
-            {
-                _response.IsSuccess = false;
-            }
-            _response.Result=obj;
+                var obj = _db.Products.First(u => u.Name.ToLower() == name.ToLower());
+                if (obj == null)
+                {
+                    _response.IsSuccess = false;
+                }
+                _response.Result = obj;
             }
             catch (Exception ex)
             {
-                _response.IsSuccess=false;
-                _response.Message=ex.Message;
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
             }
             return _response;
         }
 
         [HttpPost]
-        [Authorize(Roles ="ADMIN")]
-        public ResponseDto Post([FromBody]ProductDto productDto)
+        [Authorize(Roles = "ADMIN")]
+        public ResponseDto Post(ProductDto productDto)
         {
             try
             {
                 Product product = _mapper.Map<Product>(productDto);
                 _db.Products.Add(product);
                 _db.SaveChanges();
-                _response.Result=_mapper.Map<ProductDto>(product);
+
+                //Store the Image inside wwwroot folder!
+                if (productDto.Image != null)
+                {
+                    string fileName = product.ProductId + Path.GetExtension(productDto.Image.FileName);
+                    string filePath = @"wwwroot\ProductImages\" + fileName;
+                    var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+
+                    //To get copy of the image inside ProductDto
+                    using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                    {
+                        productDto.Image.CopyTo(fileStream);
+                    }
+
+                    //To get the url like this:  "https://localhost/product/...."
+                    var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+                    product.ImageUrl = baseUrl + "/ProductImages/" + fileName;
+                    product.ImageLocalPath = filePath;
+                }
+                else
+                {
+                    product.ImageUrl = "https://placehold.co/600x400";
+                }
+                _db.Products.Update(product);
+                _db.SaveChanges();
+                _response.Result = _mapper.Map<ProductDto>(product);
+
+                _response.Result = _mapper.Map<ProductDto>(product);
             }
             catch (Exception ex)
             {
-                _response.IsSuccess=!false;
-                _response.Message=ex.Message;
+                _response.IsSuccess = !false;
+                _response.Message = ex.Message;
             }
             return _response;
         }
 
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
-        public ResponseDto Put([FromBody]ProductDto productDto)
+        public ResponseDto Put(ProductDto productDto)
         {
             try
             {
                 Product product = _mapper.Map<Product>(productDto);
+
+                if (productDto.Image != null)
+                {
+
+                    if (!string.IsNullOrEmpty(product.ImageLocalPath))
+                    {
+                        //with this line of code we retrieve the file path in wwwroot bacause
+                        //we want to find that with that id and delete that before we proceed futhure!
+                        var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), product.ImageLocalPath);
+
+                        //In here we delete the file
+                        FileInfo file = new FileInfo(oldFilePathDirectory);
+                        if (file.Exists)
+                        {
+                            file.Delete();
+                        }
+                    }
+
+                    string fileName = product.ProductId + Path.GetExtension(productDto.Image.FileName);
+                    string filePath = @"wwwroot\ProductImages\" + fileName;
+                    var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+
+                    //To get copy of the image inside ProductDto
+                    using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                    {
+                        productDto.Image.CopyTo(fileStream);
+                    }
+
+                    //To get the url like this:  "https://localhost/product/...."
+                    var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+                    product.ImageUrl = baseUrl + "/ProductImages/" + fileName;
+                    product.ImageLocalPath = filePath;
+                }
+
                 _db.Products.Update(product);
                 _db.SaveChanges();
             }
             catch (Exception ex)
             {
-                _response.IsSuccess=false;
-                _response.Message=ex.Message;
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
             }
             return _response;
         }
@@ -121,14 +182,27 @@ namespace Flavory.Services.ProductAPI.Controllers
         {
             try
             {
-            Product obj=_db.Products.First(u=>u.ProductId==id);
-            _db.Products.Remove(obj);
-            _db.SaveChanges();
+                Product obj = _db.Products.First(u => u.ProductId == id);
+                if (!string.IsNullOrEmpty(obj.ImageLocalPath))
+                {
+                    //with this line of code we retrieve the file path in wwwroot bacause
+                    //we want to find that with that id and delete that before we proceed futhure!
+                    var oldFilePathDirectory =Path.Combine(Directory.GetCurrentDirectory(), obj.ImageLocalPath);
+
+                    //In here we delete the file
+                    FileInfo file=new FileInfo(oldFilePathDirectory);
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
+                }
+                _db.Products.Remove(obj);
+                _db.SaveChanges();
             }
             catch (Exception ex)
             {
-                _response.IsSuccess=false;
-                _response.Message=ex.Message;
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
             }
             return _response;
         }

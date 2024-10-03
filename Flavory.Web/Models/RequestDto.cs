@@ -1,5 +1,4 @@
-﻿using Flavory.Web.Utility;
-using static Flavory.Web.Utility.SD;
+﻿using static Flavory.Web.Utility.SD;
 
 namespace Flavory.Web.Models
 {
@@ -9,5 +8,7 @@ namespace Flavory.Web.Models
 		public string Url { get; set; }
 		public object Data { get; set; }
 		public string AccessToken { get; set; }
-	}
+
+		public ContentType ContentType { get; set; } = ContentType.Json;
+    }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Flavory.Web.Utility;
+using System.ComponentModel.DataAnnotations;
 
 namespace Flavory.Web.Models
 {
@@ -9,8 +10,12 @@ namespace Flavory.Web.Models
         public double Price { get; set; }
         public string Description { get; set; }
         public string CategoryName { get; set; }
-        public string ImageUrl { get; set; }
-        [Range(1,100)]
+		public string? ImageUrl { get; set; }
+		public string? ImageLocalPath { get; set; }
+		[Range(1,100)]
         public int Count { get; set; } = 1;
+        [MaxFileSize(1)]
+        [AllowedExtensions(new string[] { ".jpg", ".png",".jpeg", })]
+        public IFormFile? Image { get; set; }
     }
 }

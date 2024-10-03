@@ -68,7 +68,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseStaticFiles();  //We add this to tell the API project to read "wwwroot" folder inside that
 app.MapControllers();
 
 ApplyMigration();  // (1)

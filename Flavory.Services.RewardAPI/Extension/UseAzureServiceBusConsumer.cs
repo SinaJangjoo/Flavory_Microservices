@@ -1,7 +1,7 @@
-﻿using Mango.Services.EmailAPI.Messaging;
+﻿using Flavory.Services.RewardAPI.Messaging;
 using System.Reflection.Metadata;
 
-namespace Mango.Services.EmailAPI.Extension
+namespace Mango.Services.RewardAPI.Extension
 {
     public static class ApplicationBuilderExtensions
     {

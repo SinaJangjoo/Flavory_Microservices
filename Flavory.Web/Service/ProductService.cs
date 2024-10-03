@@ -13,11 +13,14 @@ namespace Flavory.Web.Service
         }
         public async Task<ResponseDto?> CreateProductAsync(ProductDto productDto)
         {
-            return await _baseService.SendAsync(new RequestDto()
+			//We have the ContentType.MultipartFormData only in Create and Update methods!
+			//In other methods yhe default ContentType which we define in Product Models will be "Json"!
+			return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.POST,
                 Data = productDto,
-                Url = SD.ProductAPIBase + "/api/product"
+                Url = SD.ProductAPIBase + "/api/product",
+                ContentType = SD.ContentType.MultipartFormData
             });
         }
 
@@ -59,12 +62,15 @@ namespace Flavory.Web.Service
 
         public async Task<ResponseDto?> UpdateProductAsync(ProductDto productDto)
         {
-            return await _baseService.SendAsync(new RequestDto()
+			//We have the ContentType.MultipartFormData only in Create and Update methods!
+			//In other methods yhe default ContentType which we define in Product Models will be "Json"!
+			return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.PUT,
                 Data = productDto,
-                Url = SD.ProductAPIBase + "/api/product"
-            });
+                Url = SD.ProductAPIBase + "/api/product",
+				ContentType = SD.ContentType.MultipartFormData
+			});
         }
     }
 }
