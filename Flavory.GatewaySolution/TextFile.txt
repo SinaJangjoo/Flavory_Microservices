@@ -1,0 +1,51 @@
+﻿
+
+1-  Install NuGet packages
+
+2- configure "Ocelot" inside program.cs
+
+3- Copy and paste "Extensions" folder from other projects (for eg. ShoppingCartAPI) in GatewaySolution
+
+4- configure appsettings.json and add JWT
+
+5- Then again configure program.cs and add authentication
+
+6- Now we have to add all configurations inside appsettings.json file
+
+7- When we have to configure ocelot , there are 2 things that we must configure:
+      1- Routes of our microservices 
+      2- Global configuration (Base URL where the ocelot is running)
+
+8- We have to define "Routes[]" as array because we have many roues to define there
+
+9- Inside Routes implementations we have two things :
+      1- Upstream: The request is taken from upstream (Web project calling)
+      2- Downstream: the request redirected to the downstream URL (the URL that API has in controller)
+
+10- configure upstream and downstream for every single endpoint that we have inside controllers of microservices
+
+11- When we define every ports of services inside (downstream - port) we have to update the appsettings.json
+inside our   WEB   project (where we configure all ports of services) to 7777 (our gateway port) EXECP AuthAPI !
+because it is isolated from aour gateway!
+
+12- if we have two endpoints which there query strings was the same we can combine them inside one ocelot connection string!
+    Like this: 
+    {
+      "DownstreamPathTemplate": "/api/coupon/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/coupon/{id}",
+      "UpstreamHttpMethod": [ "Get", "DELETE" ],           <-- in here we define both GET & DELETE requests in one section
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    }
+
+13- to make our appsettings.json clean we move ocelot configurations for every endpoints to new JSON file called as "ocelot.json"
+
+14- Then to configure ocelot.json file we must go to program.cs and add some configurations for that

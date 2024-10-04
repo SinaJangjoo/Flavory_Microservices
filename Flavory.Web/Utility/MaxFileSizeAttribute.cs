@@ -2,6 +2,7 @@
 
 namespace Flavory.Web.Utility
 {
+    // We implement this custom validation inside ProductDto.cs inside Models
     public class MaxFileSizeAttribute : ValidationAttribute
     {
         private readonly int _maxFileSize;

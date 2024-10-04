@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flavory.Services.EmailAPI",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flavory.Services.RewardAPI", "Flavory.Services.RewardAPI\Flavory.Services.RewardAPI.csproj", "{A28544AE-7495-4B7C-A5EC-E3F6D17517F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flavory.GatewaySolution", "Flavory.GatewaySolution\Flavory.GatewaySolution.csproj", "{B65488A7-5BDB-457E-BC3B-44ECC1E6417F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{A28544AE-7495-4B7C-A5EC-E3F6D17517F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A28544AE-7495-4B7C-A5EC-E3F6D17517F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A28544AE-7495-4B7C-A5EC-E3F6D17517F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B65488A7-5BDB-457E-BC3B-44ECC1E6417F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B65488A7-5BDB-457E-BC3B-44ECC1E6417F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B65488A7-5BDB-457E-BC3B-44ECC1E6417F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B65488A7-5BDB-457E-BC3B-44ECC1E6417F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{34D04384-C2C9-4429-B799-7BAB9698005C} = {8F563284-5F94-4355-96D2-C09920EB0AB7}
 		{08A5F810-DB69-4B80-89BF-11EBEACEA1C4} = {C9A75861-4EAA-42D0-B12D-504E864958FE}
 		{A28544AE-7495-4B7C-A5EC-E3F6D17517F8} = {C9A75861-4EAA-42D0-B12D-504E864958FE}
+		{B65488A7-5BDB-457E-BC3B-44ECC1E6417F} = {79DF4908-5EB4-4516-AF9E-A995B9D180BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7CDC93D1-34CF-4EFE-92CD-F7D5C57CF8A0}

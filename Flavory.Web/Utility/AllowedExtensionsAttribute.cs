@@ -2,6 +2,7 @@
 
 namespace Flavory.Web.Utility
 {
+    // We implement this custom validation inside ProductDto.cs inside Models
     public class AllowedExtensionsAttribute : ValidationAttribute
     {
         private readonly string[] _extensions;
@@ -25,6 +26,5 @@ namespace Flavory.Web.Utility
 
             return ValidationResult.Success;
         }
-
     }
 }
